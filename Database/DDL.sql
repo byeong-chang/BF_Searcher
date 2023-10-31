@@ -1,4 +1,4 @@
-
+drop database bf_searcher;
 Create database bf_searcher;
 use bf_searcher;
 -- 카테고리 테이블 3개 생성
@@ -26,8 +26,8 @@ CREATE TABLE Location (
     address VARCHAR(255),
     phone_number VARCHAR(20),
     homepage VARCHAR(255),
-    closed_day VARCHAR(50),
-    runtime VARCHAR(50),
+    closed_day VARCHAR(255),
+    runtime VARCHAR(255),
     free_park int,
     paid_park int,
     door_for_disabled int,
@@ -100,3 +100,4 @@ select * from location;
 select * from locationcategory;
 select * from hobbycategory;
 select * from disabledcategory;
+select count(*) from location;
