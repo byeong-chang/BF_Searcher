@@ -35,7 +35,7 @@ CREATE TABLE Location (
     toilet_for_disabled int,
     park_for_disabled int,
     big_park int,
-    guideDogPermitted int,
+    guide_dog_permitted int,
     braille_guide int,
     audio_guide int,
     star_rating DOUBLE DEFAULT 0,
