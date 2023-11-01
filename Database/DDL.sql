@@ -2,15 +2,15 @@ drop database bf_searcher;
 Create database bf_searcher;
 use bf_searcher;
 -- 카테고리 테이블 3개 생성
-CREATE TABLE HobbyCategory (
+CREATE TABLE Hobby_category (
     id BIGINT PRIMARY KEY,
     hobby VARCHAR(255)
 );
-CREATE TABLE LocationCategory (
+CREATE TABLE Location_category (
     id BIGINT PRIMARY KEY,
     location VARCHAR(255)
 );
-CREATE TABLE DisabledCategory (
+CREATE TABLE Disabled_category (
     id BIGINT PRIMARY KEY,
     disabled VARCHAR(255)
 );
@@ -39,8 +39,8 @@ CREATE TABLE Location (
     braille_guide int,
     audio_guide int,
     star_rating DOUBLE DEFAULT 0,
-    FOREIGN KEY (hobby_category_id) REFERENCES HobbyCategory(id),
-    FOREIGN KEY (location_category_id) REFERENCES LocationCategory(id)
+    FOREIGN KEY (hobby_category_id) REFERENCES Hobby_category(id),
+    FOREIGN KEY (location_category_id) REFERENCES Location_category(id)
 );
 
 -- User 테이블을 만들기 위해 필요한(정확히는 취미, 좋아요 누른 장소 들이 중복허용이라 제1정규화 도메인 원자성? 에 의해 발생하는 테이블)테이블 생성
@@ -58,12 +58,12 @@ CREATE TABLE User (
     userId VARCHAR(255),
     passwd VARCHAR(255),
     disabled BIGINT,
-    FOREIGN KEY (location_category_id) REFERENCES LocationCategory(id),
-    FOREIGN KEY (disabled_category_id) REFERENCES DisabledCategory(id)
+    FOREIGN KEY (location_category_id) REFERENCES Location_category(id),
+    FOREIGN KEY (disabled_category_id) REFERENCES Disabled_category(id)
 );
 -- Matching 기록을 남길 MatchingLog 테이블들 생성
 
-CREATE TABLE MatchingLog (
+CREATE TABLE Matching_log (
     id BIGINT PRIMARY KEY,
     volunteer_user_id BIGINT,
     matching_user_id BIGINT,
@@ -85,7 +85,7 @@ CREATE TABLE Recruitment (
 );
 
 -- chatlog인데 솔직히 아직 뭐쓸지 모르니 아무렇게나 만듬
-CREATE TABLE ChatLog (
+CREATE TABLE Chat_log (
     id BIGINT PRIMARY KEY,
     volunteer_user_id BIGINT,
     matching_user_id BIGINT,
@@ -96,8 +96,9 @@ CREATE TABLE ChatLog (
     FOREIGN KEY (matching_user_id) REFERENCES User(id),
     FOREIGN KEY (recruitment_id) REFERENCES Recruitment(id)
 );
+use bf_searcher;
 select * from location;
-select * from locationcategory;
-select * from hobbycategory;
-select * from disabledcategory;
+select * from location_category;
+select * from hobby_category;
+select * from disabled_category;
 select count(*) from location;

@@ -13,28 +13,28 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 # CSV 파일을 읽어 데이터프레임으로 변환
-locationCategory = pd.read_csv('./Data/LocationCategory.csv',index_col = 0)
-disabledCategory = pd.read_csv('./Data/disabledCategory.csv',index_col = 0)
-hobbyCategory = pd.read_csv('./Data/hobbyCategory.csv',index_col = 0)
-location = pd.read_csv('./Data/Location.csv',index_col = 0)
+locationCategory = pd.read_csv('./../Data/LocationCategory.csv',index_col = 0)
+disabledCategory = pd.read_csv('./../Data/disabledCategory.csv',index_col = 0)
+hobbyCategory = pd.read_csv('./../Data/hobbyCategory.csv',index_col = 0)
+location = pd.read_csv('./../Data/Location.csv',index_col = 0)
 
 # 데이터프레임을 반복하면서 데이터 삽입
 for index, row in locationCategory.iterrows():
-    sql = "INSERT INTO locationcategory  VALUES (%s, %s)"
+    sql = "INSERT INTO location_category  VALUES (%s, %s)"
     val = [index+1,row[0]]  # 각 열에 대한 값을 채워넣습니다.
     mycursor.execute(sql, val)
 
 
 # # 데이터프레임을 반복하면서 데이터 삽입
 for index, row in disabledCategory.iterrows():
-    sql = "INSERT INTO disabledcategory VALUES (%s, %s)"
+    sql = "INSERT INTO disabled_category VALUES (%s, %s)"
     val = (index+1,row[0])  # 각 열에 대한 값을 채워넣습니다.
     mycursor.execute(sql, val)
 
 
 # # 데이터프레임을 반복하면서 데이터 삽입
 for index, row in hobbyCategory.iterrows():
-    sql = "INSERT INTO hobbycategory VALUES (%s, %s)"
+    sql = "INSERT INTO hobby_category VALUES (%s, %s)"
     val = (index+1,row[0])  # 각 열에 대한 값을 채워넣습니다.
     mycursor.execute(sql, val)
 
