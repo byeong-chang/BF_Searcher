@@ -5,7 +5,7 @@ mydb = mysql.connector.connect(
     host="localhost",  # 호스트 이름
     user="root",  # 사용자 이름
     password="qwer1234",  # 비밀번호
-    database="BF_searcher"  # 데이터베이스 이름
+    database="bf_searcher"  # 데이터베이스 이름
 )
 
 
@@ -49,7 +49,7 @@ mydb = mysql.connector.connect(
     host="localhost",  # 호스트 이름
     user="root",  # 사용자 이름
     password="qwer1234",  # 비밀번호
-    database="BF_searcher"  # 데이터베이스 이름
+    database="bf_searcher"  # 데이터베이스 이름
 )
 # 데이터베이스 커서 생성
 mycursor = mydb.cursor()
