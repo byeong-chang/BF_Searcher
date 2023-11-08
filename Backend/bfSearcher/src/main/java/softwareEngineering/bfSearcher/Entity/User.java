@@ -2,9 +2,8 @@ package softwareEngineering.bfSearcher.Entity;
 
 
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,11 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 @Table(name = "user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false)
     private Long id;
 
     @Column
@@ -27,6 +28,7 @@ public class User {
 
     @Column(name = "Like_location")
     private String likeLocation;
+    // likeLocation도 동일함
 
     @ManyToOne
     @JoinColumn(name = "location_category_id")
@@ -42,7 +44,7 @@ public class User {
     @Column
     private String email;
 
-    @Column(name = "userId")
+    @Column(name = "user_id")
     private String userId;
 
     @Column
@@ -50,4 +52,7 @@ public class User {
 
     @Column(name = "disabled")
     private Long disabledValidate;
+
+    @Column(name = "token")
+    private String token;
 }
