@@ -13,7 +13,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("sign_up")
-    public String SignUp(@RequestBody UserDto userDto){
+    public User SignUp(@RequestBody UserDto userDto){
         return userService.SignUp(userDto);
     }
 

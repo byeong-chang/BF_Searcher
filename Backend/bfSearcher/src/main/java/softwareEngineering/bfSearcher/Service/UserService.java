@@ -34,7 +34,7 @@ public class UserService {
                 .build();
     }
 
-    public String SignUp(UserDto userDto){
+    public User SignUp(UserDto userDto){
         User user = User.builder()
                 .userId(userDto.getUserId())
                 .hobby(userDto.getHobby())
@@ -48,7 +48,7 @@ public class UserService {
                 .token(userDto.getToken())
                 .build();
         userRepository.save(user);
-        return user.getToken();
+        return user;
     }
 
     public User Login(UserDto userDto){
