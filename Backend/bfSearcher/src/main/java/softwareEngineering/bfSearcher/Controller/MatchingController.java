@@ -21,7 +21,6 @@ public class MatchingController {
     public Recruitment writeRecruitment(@RequestBody RecruitmentDto recruitmentDto){
         return matchingService.writeRecruitment(recruitmentDto);
     }
-
     @GetMapping("showFiveRecruitment")
     public List<Recruitment> showRecentFiveRecruitment(){
         return matchingService.showRecentFiveRecruitment();
