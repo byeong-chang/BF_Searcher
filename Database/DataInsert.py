@@ -4,7 +4,7 @@ import pandas as pd
 mydb = mysql.connector.connect(
     host="localhost",  # 호스트 이름
     user="root",  # 사용자 이름
-    password="qwer1234",  # 비밀번호
+    password="aaaaa",  # 비밀번호
     database="bf_searcher"  # 데이터베이스 이름
 )
 
@@ -21,8 +21,8 @@ location = pd.read_csv('./../Data/Location.csv',index_col = 0)
 
 # 데이터프레임을 반복하면서 데이터 삽입
 for index, row in locationCategory.iterrows():
-    sql = "INSERT INTO location_category  VALUES (%s, %s)"
-    val = [index+1,row[0]]  # 각 열에 대한 값을 채워넣습니다.
+    sql = "INSERT INTO location_category  VALUES (%s, %s, %s, %s)"
+    val = [index+1,row[0], 0.0, 0.0]  # 각 열에 대한 값을 채워넣습니다.
     mycursor.execute(sql, val)
 
 
@@ -49,7 +49,7 @@ mydb.close()
 mydb = mysql.connector.connect(
     host="localhost",  # 호스트 이름
     user="root",  # 사용자 이름
-    password="qwer1234",  # 비밀번호
+    password="aaaaa",  # 비밀번호
     database="bf_searcher"  # 데이터베이스 이름
 )
 # 데이터베이스 커서 생성
