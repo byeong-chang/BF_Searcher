@@ -17,9 +17,9 @@ import java.util.List;
 public class LocationController {
 
     private final LocationService locationService;
-    @GetMapping("locationRecommend")
-    public List<LocationDto> showBucket(@PathVariable Long userId){
-        return locationService.getAllLocations();
+    @GetMapping("Location/{token}")
+    public List<LocationDto> Location(@PathVariable String token){
+        return locationService.getRecommendLocation(token);
     }
 
 }
