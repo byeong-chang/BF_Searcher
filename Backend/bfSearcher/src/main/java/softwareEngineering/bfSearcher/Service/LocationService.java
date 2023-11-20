@@ -24,11 +24,11 @@ public class LocationService {
         var userLatitude = user.getLocationCategory().getLatitude();
         var userLongitude = user.getLocationCategory().getLongitude();
         var disabledName = user.getDisabledCategory().getDisabled();
-        var hobby = user.getHobby();
+        var hobby = Long.parseLong(user.getHobby());
 
         List<LocationDto> filteredLocations = filterByDisabled(disabledName)
                 .stream()
-                .filter(location -> location.getHobbyCategory().getHobby().contains(hobby))
+                .filter(location -> location.getHobbyCategory().getId().equals(hobby))
                 .map(this::entityToDto)
                 .collect(Collectors.toList());
 
