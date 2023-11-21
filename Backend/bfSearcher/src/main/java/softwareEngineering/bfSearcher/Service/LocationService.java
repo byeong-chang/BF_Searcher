@@ -19,10 +19,8 @@ public class LocationService {
     public final UserService userService;
     private static final int EARTH_RADIUS = 6371; // 지구 반지름 (단위: km)
 
-    public List<LocationDto> getRecommendLocation(String token) {
+    public List<LocationDto> getRecommendLocation(String token, double latitude, double longitude) {
         var user = userService.Access(token);
-        var userLatitude = user.getLocationCategory().getLatitude();
-        var userLongitude = user.getLocationCategory().getLongitude();
         var disabledName = user.getDisabledCategory().getDisabled();
         var hobby = Long.parseLong(user.getHobby());
 
@@ -41,7 +39,7 @@ public class LocationService {
         // 거리 가까운 순으로 정렬
         List<LocationDto> sortedByDistance = new ArrayList<>(filteredLocations);
         sortedByDistance.sort(Comparator.comparingDouble(location ->
-                calculateDistance(userLatitude, userLongitude, location.getLatitude(), location.getLongitude())));
+                calculateDistance(latitude, longitude, location.getLatitude(), location.getLongitude())));
         // 거리 가까운 순으로 2개 추가
         List<LocationDto> distanceRecommendations = sortedByDistance.subList(0, 2);
 
