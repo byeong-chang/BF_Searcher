@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import softwareEngineering.bfSearcher.DTO.LocationDto;
 import softwareEngineering.bfSearcher.DTO.LocationRecommendDto;
+import softwareEngineering.bfSearcher.DTO.LocationSearchDto;
 import softwareEngineering.bfSearcher.Entity.Location;
 import softwareEngineering.bfSearcher.Repository.LocationRepository;
 
@@ -120,4 +121,31 @@ public class LocationService {
         // 거리 계산 후 반환 (단위: km)
         return EARTH_RADIUS * c;
     }
- }
+
+    public List<LocationDto> getSearchLocation(LocationSearchDto locationSearchDto) {
+        if (locationSearchDto.getLocationId() != null && locationSearchDto.getHobbyId() != null) {
+            // 두 값이 모두 존재하는 경우
+            return locationRepository.findByLocationCategoryIdAndHobbyCategoryId(
+                            locationSearchDto.getLocationId(), locationSearchDto.getHobbyId())
+                    .stream()
+                    .map(this::entityToDto)
+                    .collect(Collectors.toList());
+        } else if (locationSearchDto.getLocationId() != null) {
+            // locationId만 존재하는 경우
+            return locationRepository.findByLocationCategoryId(locationSearchDto.getLocationId())
+                    .stream()
+                    .map(this::entityToDto)
+                    .collect(Collectors.toList());
+        } else if (locationSearchDto.getHobbyId() != null) {
+            // hobbyId만 존재하는 경우
+            return locationRepository.findByHobbyCategoryId(locationSearchDto.getHobbyId())
+                    .stream()
+                    .map(this::entityToDto)
+                    .collect(Collectors.toList());
+        } else {
+            // locationId와 hobbyId가 모두 존재하지 않는 경우
+            return Collections.emptyList(); // 빈 리스트 반환
+        }
+    }
+
+}
