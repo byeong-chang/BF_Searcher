@@ -2,12 +2,16 @@ package softwareEngineering.bfSearcher.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import softwareEngineering.bfSearcher.DTO.LocationDto;
+import softwareEngineering.bfSearcher.DTO.LocationForMapDto;
+import softwareEngineering.bfSearcher.DTO.ReviewDto;
 import softwareEngineering.bfSearcher.DTO.UserDto;
+import softwareEngineering.bfSearcher.Entity.Location;
+import softwareEngineering.bfSearcher.Entity.Review;
 import softwareEngineering.bfSearcher.Entity.User;
-import softwareEngineering.bfSearcher.Repository.DisabledCategoryRepository;
-import softwareEngineering.bfSearcher.Repository.LocationCategoryRepository;
-import softwareEngineering.bfSearcher.Repository.UserRepository;
+import softwareEngineering.bfSearcher.Repository.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -18,6 +22,9 @@ public class UserService {
     public final UserRepository userRepository;
     public final LocationCategoryRepository locationCategoryRepository;
     public final DisabledCategoryRepository disabledCategoryRepository;
+    public final ReviewRepository reviewRepository;
+    public final LocationRepository locationRepository;
+
 
     public UserDto entityToDto(User user) {
         return UserDto.builder()
@@ -53,14 +60,14 @@ public class UserService {
 
     public User Login(UserDto userDto){
         User user = userRepository.findByUserIdAndPasswd(userDto.getUserId(),userDto.getPasswd())
-                .orElseThrow(()->new NoSuchElementException("해당하는 사용자가 없습니다."));
+                .orElseGet(User::new);
         user.setToken(userDto.getToken());
         userRepository.save(user);
         return  user;
     }
     public User Access(String token){
         User user = userRepository.findByToken(token)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 사용자가 없습니다."));
+                .orElseGet(User::new);
         if (user.getToken().equals(token)){
             return user;
         }
@@ -70,5 +77,51 @@ public class UserService {
     }
     public List<User> AllUser(){
         return userRepository.findAll();
+    }
+
+    public Review writeReview(ReviewDto reviewDto) {
+        Review review = Review.builder()
+                .user(userRepository.findByToken(reviewDto.getUserToken()).orElseGet(User::new))
+                .location(locationRepository.findById(reviewDto.getLocationId()).orElseGet(Location::new))
+                .content(reviewDto.getContent())
+                .starRating(reviewDto.getStarRating())
+                .build();
+        reviewRepository.save(review);
+        return  review;
+    }
+
+
+    public List<LocationForMapDto> showAllLikeLocation(String userToken) {
+        List<LocationForMapDto> likeLocations = new ArrayList<>();
+        User user = userRepository.findByToken(userToken).orElseGet(User::new);
+        String likeLocationString = user.getLikeLocation();
+
+        System.out.println("--------------------");
+        System.out.println(likeLocationString);
+        System.out.println("--------------------");
+
+        if (likeLocationString != null && !likeLocationString.trim().isEmpty()){
+            String[] parts = likeLocationString.split(" ");
+            System.out.println(parts);
+            List<Long> likeLocationIds = new ArrayList<Long>();
+            // 각 부분을 Long으로 변환
+            for (String part : parts) {
+                Long number = Long.parseLong(part);
+                likeLocationIds.add(number);
+            }
+
+            for (Long locationId : likeLocationIds){
+                Location location = locationRepository.findById(locationId).orElseGet(Location::new);
+                LocationForMapDto locationForMapDto = LocationForMapDto.builder()
+                        .locationId(locationId)
+                        .locationName(location.getLocationName())
+                        .hobbyCategory(location.getHobbyCategory().getHobby())
+                        .latitude(location.getLatitude())
+                        .longitude(location.getLongitude())
+                        .build();
+                likeLocations.add(locationForMapDto);
+            }
+        }
+        return likeLocations;
     }
 }
