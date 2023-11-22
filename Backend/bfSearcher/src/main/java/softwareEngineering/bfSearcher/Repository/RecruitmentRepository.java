@@ -12,4 +12,5 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, Long> 
     Optional<Recruitment> findById(Long aLong);
     Recruitment save(Recruitment recruitment);
     List<Recruitment> findTop5ByOrderByIdDesc();
+    List<Recruitment> findByFlag(Long flag);
 }

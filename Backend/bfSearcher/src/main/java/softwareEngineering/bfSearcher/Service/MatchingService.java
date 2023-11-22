@@ -12,6 +12,8 @@ import softwareEngineering.bfSearcher.Repository.MatchingLogRepository;
 import softwareEngineering.bfSearcher.Repository.RecruitmentRepository;
 import softwareEngineering.bfSearcher.Repository.UserRepository;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,4 +65,28 @@ public class MatchingService {
         return matchingLog;
     }
 
+    public Recruitment removeRecruitmet(Long recruitmentId) {
+        Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseGet(Recruitment::new);
+        recruitment.setFlag(1);
+        recruitmentRepository.save(recruitment);
+        return recruitment;
+    }
+
+    public List<Recruitment> showAllRecruitment() {
+        List<Recruitment> recruitmentList = recruitmentRepository.findByFlag(0L);
+        return recruitmentList;
+    }
+
+    public List<Recruitment> removeRecruitmentAutoByDate() {
+        List<Recruitment> recruitmentList = recruitmentRepository.findByFlag(0L);
+        LocalDate today = LocalDate.now();
+        List<Recruitment> removedRecruitment = new ArrayList<>();
+        for (Recruitment re : recruitmentList){
+            if (today.compareTo(re.getReservationDate()) >= 0 ){
+                removeRecruitmet(re.getId());
+                removedRecruitment.add(re);
+            }
+        }
+        return  removedRecruitment;
+    }
 }
