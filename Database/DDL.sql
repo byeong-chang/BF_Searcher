@@ -9,9 +9,7 @@ CREATE TABLE hobby_category (
 );
 CREATE TABLE location_category (
     id BIGINT PRIMARY KEY,
-    location VARCHAR(255),
-    latitude DOUBLE,
-    longitude DOUBLE
+    location VARCHAR(255)
 );
 CREATE TABLE disabled_category (
     id BIGINT PRIMARY KEY,
