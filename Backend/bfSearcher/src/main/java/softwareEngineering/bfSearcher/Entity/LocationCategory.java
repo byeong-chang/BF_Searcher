@@ -15,6 +15,4 @@ public class LocationCategory {
     private Long id;
 
     private String location;
-    private double latitude;
-    private double longitude;
 }
