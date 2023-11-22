@@ -53,14 +53,14 @@ public class UserService {
 
     public User Login(UserDto userDto){
         User user = userRepository.findByUserIdAndPasswd(userDto.getUserId(),userDto.getPasswd())
-                .orElseThrow(()->new NoSuchElementException("해당하는 사용자가 없습니다."));
+                .orElseGet(User::new);
         user.setToken(userDto.getToken());
         userRepository.save(user);
         return  user;
     }
     public User Access(String token){
         User user = userRepository.findByToken(token)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 사용자가 없습니다."));
+                .orElseGet(User::new);
         if (user.getToken().equals(token)){
             return user;
         }
