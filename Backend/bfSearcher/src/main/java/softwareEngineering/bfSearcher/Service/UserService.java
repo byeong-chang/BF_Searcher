@@ -1,8 +1,9 @@
 package softwareEngineering.bfSearcher.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import softwareEngineering.bfSearcher.DTO.LocationDto;
+import softwareEngineering.bfSearcher.DTO.LikeLocationDto;
 import softwareEngineering.bfSearcher.DTO.LocationForMapDto;
 import softwareEngineering.bfSearcher.DTO.ReviewDto;
 import softwareEngineering.bfSearcher.DTO.UserDto;
@@ -13,7 +14,6 @@ import softwareEngineering.bfSearcher.Repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -124,4 +124,33 @@ public class UserService {
         }
         return likeLocations;
     }
+
+    public ResponseEntity<Boolean> saveLikeLocation(LikeLocationDto likeLocationDto) {
+        try {
+            var user = Access(likeLocationDto.getToken());
+
+            // 기존 like_location 값을 가져옴
+            String currentLikeLocation = user.getLikeLocation();
+
+            // null 체크 및 빈 경우에는 공백 없이 추가
+            String newLikeLocation;
+            if (currentLikeLocation == null) {
+                newLikeLocation = likeLocationDto.getLocationId();
+            } else if (currentLikeLocation.isEmpty()) {
+                newLikeLocation = likeLocationDto.getLocationId();
+            } else {
+                newLikeLocation = currentLikeLocation + " " + likeLocationDto.getLocationId();
+            }
+
+            // 업데이트된 값을 다시 저장
+            user.setLikeLocation(newLikeLocation);
+            userRepository.save(user);
+
+            return ResponseEntity.ok(true);
+        } catch (Exception e) {
+            // 오류 발생 시 false 반환
+            return ResponseEntity.ok(false);
+        }
+    }
+
 }

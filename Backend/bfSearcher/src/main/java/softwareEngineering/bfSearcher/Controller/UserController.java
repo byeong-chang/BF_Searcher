@@ -1,7 +1,9 @@
 package softwareEngineering.bfSearcher.Controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import softwareEngineering.bfSearcher.DTO.LikeLocationDto;
 import softwareEngineering.bfSearcher.DTO.LocationForMapDto;
 import softwareEngineering.bfSearcher.DTO.ReviewDto;
 import softwareEngineering.bfSearcher.DTO.UserDto;
@@ -34,5 +36,10 @@ public class UserController {
     @GetMapping("showAllLikeLocation/{userToken}")
     public List<LocationForMapDto> showAllLikeLocation(@PathVariable String userToken){
         return userService.showAllLikeLocation(userToken);
+    }
+
+    @PostMapping("SaveLikeLocation")
+    public ResponseEntity<Boolean> saveLikeLocation(@RequestBody LikeLocationDto likeLocationDto){
+        return userService.saveLikeLocation(likeLocationDto);
     }
 }
