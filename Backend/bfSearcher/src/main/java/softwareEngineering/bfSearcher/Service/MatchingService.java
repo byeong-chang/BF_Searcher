@@ -2,15 +2,11 @@ package softwareEngineering.bfSearcher.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import softwareEngineering.bfSearcher.DTO.ChatLogDto;
+import softwareEngineering.bfSearcher.DTO.DetailRecruitmentDto;
 import softwareEngineering.bfSearcher.DTO.RecruitmentDto;
-import softwareEngineering.bfSearcher.Entity.Location;
-import softwareEngineering.bfSearcher.Entity.MatchingLog;
-import softwareEngineering.bfSearcher.Entity.Recruitment;
-import softwareEngineering.bfSearcher.Entity.User;
-import softwareEngineering.bfSearcher.Repository.LocationRepository;
-import softwareEngineering.bfSearcher.Repository.MatchingLogRepository;
-import softwareEngineering.bfSearcher.Repository.RecruitmentRepository;
-import softwareEngineering.bfSearcher.Repository.UserRepository;
+import softwareEngineering.bfSearcher.Entity.*;
+import softwareEngineering.bfSearcher.Repository.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,6 +20,7 @@ public class MatchingService {
     private final LocationRepository locationRepository;
     private final UserRepository userRepository;
     private final MatchingLogRepository matchingLogRepository;
+    private final ChatLogRepository chatLogRepository;
 
     public Recruitment writeRecruitment(RecruitmentDto recruitmentDto){
         Recruitment recruitment = Recruitment.builder()
@@ -39,7 +36,7 @@ public class MatchingService {
 
     }
     public List<Recruitment> showRecentFiveRecruitment(){
-        List<Recruitment> recruitmentList= recruitmentRepository.findTop5ByOrderByIdDesc();
+        List<Recruitment> recruitmentList= recruitmentRepository.findTop5ByFlagOrderByIdDesc(0L);
         return recruitmentList;
     }
 
@@ -88,5 +85,45 @@ public class MatchingService {
             }
         }
         return  removedRecruitment;
+    }
+
+    public DetailRecruitmentDto showDetailRecruitment(Long recruitmentId) {
+        Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseGet(Recruitment::new);
+        List<ChatLog> chatLogList = chatLogRepository.findByRecruitmentId(recruitment.getId());
+        List<ChatLogDto> chatLogDtoList = new ArrayList<>();
+        for (ChatLog chat : chatLogList) {
+            ChatLogDto chatLogDto = ChatLogDto.builder()
+                    .currentChatId(chat.getId())
+                    .recruitmentId(chat.getRecruitment().getId())
+                    .currentUserToken(chat.getVolunteerUser().getToken())
+                    .data(chat.getData())
+                    .userName(chat.getVolunteerUser().getUsername())
+                    .chatLink(chat.getChatLink())
+                    .build();
+            chatLogDtoList.add(chatLogDto);
+        }
+
+        DetailRecruitmentDto detailRecruitmentDto = DetailRecruitmentDto.builder()
+                .chatLogList(chatLogDtoList)
+                .content(recruitment.getContent())
+                .flag(recruitment.getFlag())
+                .reservationDate(recruitment.getReservationDate())
+                .location(recruitment.getLocation())
+                .user(recruitment.getUser())
+                .build();
+        return detailRecruitmentDto;
+    }
+
+    public ChatLog writeChatting(ChatLogDto chatLogDto) {
+        Recruitment recruitment = recruitmentRepository.findById(chatLogDto.getRecruitmentId()).orElseGet(Recruitment::new);
+        ChatLog chatLog = ChatLog.builder()
+                .chatLink(chatLogDto.getChatLink())
+                .data(chatLogDto.getData())
+                .volunteerUser(userRepository.findByToken(chatLogDto.getCurrentUserToken()).orElseGet(User::new))
+                .matchingUser(recruitment.getUser())
+                .recruitment(recruitment)
+                .build();
+        chatLogRepository.save(chatLog);
+        return  chatLog;
     }
 }
