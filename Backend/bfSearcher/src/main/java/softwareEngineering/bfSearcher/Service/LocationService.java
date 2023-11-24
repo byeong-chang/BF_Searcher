@@ -2,11 +2,14 @@ package softwareEngineering.bfSearcher.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import softwareEngineering.bfSearcher.DTO.LocationDetailDto;
 import softwareEngineering.bfSearcher.DTO.LocationDto;
 import softwareEngineering.bfSearcher.DTO.LocationRecommendDto;
 import softwareEngineering.bfSearcher.DTO.LocationSearchDto;
 import softwareEngineering.bfSearcher.Entity.Location;
+import softwareEngineering.bfSearcher.Entity.Review;
 import softwareEngineering.bfSearcher.Repository.LocationRepository;
+import softwareEngineering.bfSearcher.Repository.ReviewRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LocationService {
     public final LocationRepository locationRepository;
+    public final ReviewRepository reviewRepository;
     public final UserService userService;
     private static final int EARTH_RADIUS = 6371; // 지구 반지름 (단위: km)
 
@@ -148,4 +152,15 @@ public class LocationService {
         }
     }
 
+    public LocationDetailDto getLocationDetails(int locationId) {
+        LocationDetailDto locationDetailDto = new LocationDetailDto();
+
+        Location foundLocation = locationRepository.findById(locationId);
+        locationDetailDto.setLocation(foundLocation);
+
+        List<Review> reviews = reviewRepository.findByLocationId(locationId);
+        locationDetailDto.setReviews(reviews);
+
+        return locationDetailDto;
+    }
 }

@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import softwareEngineering.bfSearcher.Entity.Location;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,4 +24,6 @@ public interface LocationRepository extends JpaRepository<Location,Long> {
     List<Location> findByLocationCategoryId(int location_category_id);
 
     List<Location> findByLocationCategoryIdAndHobbyCategoryId(int location_category_id, int hobby_category_id);
+
+    Location findById(int location_id);
 }
