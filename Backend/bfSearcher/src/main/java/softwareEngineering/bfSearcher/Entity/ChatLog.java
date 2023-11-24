@@ -2,6 +2,7 @@ package softwareEngineering.bfSearcher.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Table(name = "chat_log")
+@Builder
 public class ChatLog {
 
     @Id
@@ -30,8 +32,8 @@ public class ChatLog {
     @Column(name = "data", columnDefinition = "TEXT")
     private String data;
 
-    @Column(name = "flag")
-    private Integer flag;
+    @Column(name = "chat_link")
+    private Long chatLink;
 
 
     // 추가적인 필드, 생성자, getter, setter 등이 있을 수 있습니다.
