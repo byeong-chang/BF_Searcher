@@ -80,6 +80,7 @@ CREATE TABLE recruitment (
     location_id BIGINT,
     user_id BIGINT,
     reservation_date DATE,
+    title VARCHAR(255),
     content TEXT,
     flag INT,
     FOREIGN KEY (location_id) REFERENCES location(id),

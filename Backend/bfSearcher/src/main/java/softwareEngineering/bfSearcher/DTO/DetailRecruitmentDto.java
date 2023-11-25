@@ -20,6 +20,7 @@ public class DetailRecruitmentDto {
     private Location location;
     private User user;
     private LocalDate reservationDate;
+    private String title;
     private String content;
     private Integer flag;
     private List<ChatLogDto> chatLogList;

@@ -16,6 +16,7 @@ public class RecruitmentDto {
     private Long locationId;
     private Long userId;
     private LocalDate reservationDate;
+    private String title;
     private String content;
     private Integer flag;
 
