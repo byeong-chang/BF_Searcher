@@ -93,7 +93,7 @@ CREATE TABLE chat_log (
     matching_user_id BIGINT,
     recruitment_id BIGINT,
     data TEXT,
-    flag INT,
+    chat_link BIGINT,
     FOREIGN KEY (volunteer_user_id) REFERENCES user(id),
     FOREIGN KEY (matching_user_id) REFERENCES user(id),
     FOREIGN KEY (recruitment_id) REFERENCES recruitment(id)
