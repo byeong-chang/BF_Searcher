@@ -27,6 +27,7 @@ public class MatchingService {
                 .location(locationRepository.findById(recruitmentDto.getLocationId()).orElseGet(Location::new))
                 .user(userRepository.findById(recruitmentDto.getUserId()).orElseGet(User::new))
                 .flag(0)
+                .title(recruitmentDto.getTitle())
                 .content(recruitmentDto.getContent())
                 .reservationDate(recruitmentDto.getReservationDate())
                 .build();
@@ -40,7 +41,7 @@ public class MatchingService {
         return recruitmentList;
     }
 
-//    public makeChatting() - 채팅기능 어떻게 할지 자료조사가 필요함
+    //    public makeChatting() - 채팅기능 어떻게 할지 자료조사가 필요함
     public MatchingLog saveMatchingResult(Boolean flag, Long recruitmentId, Long volunteerUserId){
         // 이거도 코드가 좀 이상함 입력값이라던가 매칭 기록 어떻게 남길건지고민이 필요
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseGet(Recruitment::new);
@@ -105,6 +106,7 @@ public class MatchingService {
 
         DetailRecruitmentDto detailRecruitmentDto = DetailRecruitmentDto.builder()
                 .chatLogList(chatLogDtoList)
+                .title(recruitment.getTitle())
                 .content(recruitment.getContent())
                 .flag(recruitment.getFlag())
                 .reservationDate(recruitment.getReservationDate())

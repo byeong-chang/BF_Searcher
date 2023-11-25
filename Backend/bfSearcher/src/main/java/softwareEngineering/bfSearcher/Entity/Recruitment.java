@@ -31,6 +31,9 @@ public class Recruitment {
     @Column(name = "reservation_date")
     private LocalDate reservationDate;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
