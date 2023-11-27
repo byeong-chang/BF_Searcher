@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import softwareEngineering.bfSearcher.DTO.LocationDto;
 import softwareEngineering.bfSearcher.DTO.LocationRecommendDto;
+import softwareEngineering.bfSearcher.DTO.LocationReviewDto;
 import softwareEngineering.bfSearcher.DTO.LocationSearchDto;
 import softwareEngineering.bfSearcher.Entity.Location;
 import softwareEngineering.bfSearcher.Entity.Review;
@@ -151,9 +152,17 @@ public class LocationService {
         }
     }
 
-    public List<Review> getLocationReviews(int locationId) {
+    public List<LocationReviewDto> getLocationReviews(int locationId) {
         List<Review> reviews = reviewRepository.findByLocationId(locationId);
-
-        return reviews;
+        List<LocationReviewDto> locationReviewDtos = new ArrayList<>();
+        for (Review review : reviews){
+            LocationReviewDto locationReviewDto = LocationReviewDto.builder()
+                    .userName(review.getUser().getUsername())
+                    .content(review.getContent())
+                    .starRating(review.getStarRating())
+                    .build();
+            locationReviewDtos.add(locationReviewDto);
+        }
+        return locationReviewDtos;
     }
 }

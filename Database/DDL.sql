@@ -109,6 +109,33 @@ CREATE TABLE IF NOT EXISTS review (
     FOREIGN KEY (location_id) REFERENCES location(id),
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
+
+
+DELIMITER //
+CREATE TRIGGER after_review_insert
+AFTER INSERT ON review
+FOR EACH ROW
+BEGIN
+    UPDATE location
+    SET star_rating = (SELECT AVG(star_rating) FROM review WHERE location_id = NEW.location_id)
+    WHERE id = NEW.location_id;
+END;
+//
+DELIMITER ;
+
+-- Create a trigger for DELETE operation on the review table
+DELIMITER //
+CREATE TRIGGER after_review_delete
+AFTER DELETE ON review
+FOR EACH ROW
+BEGIN
+    UPDATE location
+    SET star_rating = (SELECT AVG(star_rating) FROM review WHERE location_id = OLD.location_id)
+    WHERE id = OLD.location_id;
+END;
+//
+DELIMITER ;
+
 use bf_searcher;
 select * from location;
 select * from location_category;
