@@ -156,8 +156,7 @@ public class LocationService {
         List<Review> reviews = reviewRepository.findByLocationId(locationId);
         List<LocationReviewDto> locationReviewDtos = new ArrayList<>();
         for (Review review : reviews){
-            LocationReviewDto locationReviewDto = new LocationReviewDto();
-            locationReviewDto.builder()
+            LocationReviewDto locationReviewDto = LocationReviewDto.builder()
                     .userName(review.getUser().getUsername())
                     .content(review.getContent())
                     .starRating(review.getStarRating())
