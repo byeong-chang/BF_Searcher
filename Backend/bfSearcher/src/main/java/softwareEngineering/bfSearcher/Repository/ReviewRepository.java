@@ -9,5 +9,5 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
 
     Review save(Review review);
 
-    List<Review> findByLocationId(int location_id);
+    List<Review> findByLocationId(Long location_id);
 }

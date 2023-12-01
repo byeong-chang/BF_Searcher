@@ -2,10 +2,7 @@ package softwareEngineering.bfSearcher.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import softwareEngineering.bfSearcher.DTO.LocationDto;
-import softwareEngineering.bfSearcher.DTO.LocationRecommendDto;
-import softwareEngineering.bfSearcher.DTO.LocationReviewDto;
-import softwareEngineering.bfSearcher.DTO.LocationSearchDto;
+import softwareEngineering.bfSearcher.DTO.*;
 import softwareEngineering.bfSearcher.Entity.Location;
 import softwareEngineering.bfSearcher.Entity.Review;
 import softwareEngineering.bfSearcher.Repository.LocationRepository;
@@ -152,7 +149,7 @@ public class LocationService {
         }
     }
 
-    public List<LocationReviewDto> getLocationReviews(int locationId) {
+    public List<LocationReviewDto> getLocationReviews(Long locationId) {
         List<Review> reviews = reviewRepository.findByLocationId(locationId);
         List<LocationReviewDto> locationReviewDtos = new ArrayList<>();
         for (Review review : reviews){
@@ -164,5 +161,16 @@ public class LocationService {
             locationReviewDtos.add(locationReviewDto);
         }
         return locationReviewDtos;
+    }
+
+    public LocationDetail getDetailLocation(Long locationId) {
+        List<LocationReviewDto> locationReviewDtos = getLocationReviews(locationId);
+        Location location = locationRepository.findById(locationId).orElseGet(Location::new);
+
+        LocationDetail locationDetail = LocationDetail.builder()
+                .location(location)
+                .locationReviewDtos(locationReviewDtos)
+                .build();
+        return locationDetail;
     }
 }

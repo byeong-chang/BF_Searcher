@@ -37,7 +37,6 @@ public class UserController {
     public List<LocationForMapDto> showAllLikeLocation(@PathVariable String userToken){
         return userService.showAllLikeLocation(userToken);
     }
-
     @PostMapping("SaveLikeLocation")
     public ResponseEntity<Boolean> saveLikeLocation(@RequestBody LikeLocationDto likeLocationDto){
         return userService.saveLikeLocation(likeLocationDto);

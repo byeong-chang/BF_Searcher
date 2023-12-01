@@ -3,10 +3,7 @@ package softwareEngineering.bfSearcher.Controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import softwareEngineering.bfSearcher.DTO.LocationDto;
-import softwareEngineering.bfSearcher.DTO.LocationRecommendDto;
-import softwareEngineering.bfSearcher.DTO.LocationReviewDto;
-import softwareEngineering.bfSearcher.DTO.LocationSearchDto;
+import softwareEngineering.bfSearcher.DTO.*;
 import softwareEngineering.bfSearcher.Entity.Review;
 import softwareEngineering.bfSearcher.Service.LocationService;
 
@@ -29,7 +26,11 @@ public class LocationController {
     }
 
     @GetMapping("LocationReview/{locationId}")
-    public List<LocationReviewDto> LocationReview(@PathVariable int locationId){
+    public List<LocationReviewDto> LocationReview(@PathVariable Long locationId){
         return locationService.getLocationReviews(locationId);
+    }
+    @GetMapping("LocationDetail/{locationId}")
+    public LocationDetail LocationDetail(@PathVariable Long locationId){
+        return locationService.getDetailLocation(locationId);
     }
 }
