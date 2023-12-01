@@ -18,6 +18,7 @@ disabledCategory = pd.read_csv('./../Data/disabledCategory.csv',index_col = 0)
 hobbyCategory = pd.read_csv('./../Data/hobbyCategory.csv',index_col = 0)
 location = pd.read_csv('./../Data/Location.csv',index_col = 0)
 
+disabledCategory.loc[9]= '장애 없음'
 
 # 데이터프레임을 반복하면서 데이터 삽입
 for index, row in locationCategory.iterrows():
