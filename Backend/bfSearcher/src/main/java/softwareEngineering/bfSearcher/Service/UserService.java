@@ -61,9 +61,11 @@ public class UserService {
     public User Login(UserDto userDto){
         User user = userRepository.findByUserIdAndPasswd(userDto.getUserId(),userDto.getPasswd())
                 .orElseGet(User::new);
-        user.setToken(userDto.getToken());
-        userRepository.save(user);
-        return  user;
+        if (user.getUserId() != null) {
+            user.setToken(userDto.getToken());
+            userRepository.save(user);
+        }
+        return user;
     }
     public User Access(String token){
         User user = userRepository.findByToken(token)
