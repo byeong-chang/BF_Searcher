@@ -1,6 +1,7 @@
 package softwareEngineering.bfSearcher.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import softwareEngineering.bfSearcher.DTO.LikeLocationDto;
@@ -24,7 +25,7 @@ public class UserService {
     public final DisabledCategoryRepository disabledCategoryRepository;
     public final ReviewRepository reviewRepository;
     public final LocationRepository locationRepository;
-
+    private final String salt = "$2a$10$IWwR3bJ7Zn3ico4qEcz/D.";
 
     public UserDto entityToDto(User user) {
         return UserDto.builder()
@@ -50,7 +51,7 @@ public class UserService {
                 .disabledCategory(disabledCategoryRepository.findByDisabled(userDto.getDisabledCategory()))
                 .username(userDto.getUsername())
                 .email(userDto.getEmail())
-                .passwd(userDto.getPasswd())
+                .passwd(BCrypt.hashpw(userDto.getPasswd(),salt))
                 .disabledValidate(0L)
                 .token(userDto.getToken())
                 .build();
@@ -59,7 +60,7 @@ public class UserService {
     }
 
     public User Login(UserDto userDto){
-        User user = userRepository.findByUserIdAndPasswd(userDto.getUserId(),userDto.getPasswd())
+        User user = userRepository.findByUserIdAndPasswd(userDto.getUserId(),BCrypt.hashpw(userDto.getPasswd(),salt))
                 .orElseGet(User::new);
         if (user.getUserId() != null) {
             user.setToken(userDto.getToken());
